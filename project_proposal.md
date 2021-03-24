@@ -10,7 +10,7 @@ Data: We will use the data from a Wikipedia page (https://en.wikipedia.org/wiki/
 
 Visuals: We will represent our data with histograms to show us the most common elements in a Grammary-winning song from composers, performer(s), and genre.
 
-**Proposal Two: The Perfect Soccer Player of the Year**
+**Proposal Two: The Perfect Soccer Player of the Year:**
 
 Research Question: What kind of player would be the perfect player to win a Ballon d'Or (soccer's prize for Best Player of the Year)?
 
