@@ -5,11 +5,12 @@
 ## Import grammy_scrape file for the dataframe
 import itertools
 from grammy_scrape import grammy_dataframe
+from pandas import DataFrame
 
-def main():
+def nationalities_total():
     '''
     Gets the nationalities from the dataframe column
-    and puts them into a list for plotting
+    and puts them into a list
 
     Arguments: None
 
@@ -20,5 +21,11 @@ def main():
     
     return list(itertools.chain.from_iterable(nationalities_list))
 
+def list_to_df(nationalities_list):
+
+    nationalities_df = DataFrame(nationalities_list,columns=['Nationalities'])
+
+    return nationalities_df
+
 ## For testing
-## print(main())
+print(list_to_df(nationalities_total()))
