@@ -1,25 +1,30 @@
-# from bs4 import BeautifulSoup
+from bs4 import BeautifulSoup
 import requests
-#import pandas as pd
-
-wiki_url = "https://en.wikipedia.org/wiki/Grammy_Award_for_Song_of_the_Year"
-table_name = "wikitable sortable"
-
-response = requests.get(wiki_url, auth=('user', 'pass'))
-# soup = BeautifulSoup(response.text, 'lxml')
-
-#grammy_table = soup.find('table', {'class':table_name})
-import bs4 as bs
 import pandas as pd
 
-soup = bs.BeautifulSoup(response.text, 'lxml')
-parsed_table = soup.find('table', {'class':table_name})
-data = [[td.a['href'] if td.find('a') else 
-            ''.join(td.stripped_strings)
-            for td in row.find_all('td')]
-        for row in parsed_table.find_all('tr')]
-df = pd.DataFrame(data[1:], columns=data[0])
-print(df)
+wiki_url = "https://en.wikipedia.org/wiki/List_of_largest_companies_by_revenue"
+table_name = "wikitable sortable"
+
+response = requests.get(wiki_url).text
+soup = BeautifulSoup(response, 'lxml')
+
+fortune_table = soup.find('table', {'class':table_name})
+rows = fortune_table.find_all('tr')
+
+dict_company_links = {}
+list_company_links = []
+
+for tr in rows:
+    elements = tr.find_all("td")
+    if elements != []:
+        company = elements[0].text.strip()
+        if elements[0].find("a"):
+            link = "https://en.wikipedia.org/wiki/"+elements[0].find("a")["href"] 
+            dict_company_links[company] = link
+            list_company_links.append(link)
+
+print(dict_company_links)
+print(list_company_links)
 
 
 
