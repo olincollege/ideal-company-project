@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 ## Import the scraped dataframe from 'wikipedia_scrape.py'
 from wikipedia_scrape import fortune_table
 
@@ -25,8 +26,6 @@ for company_row in fortune_rows:
 ## Print the dictionary and list for testing purposes
 print(dict_company_links)
 #print(list_company_links)
-
-
 
 # thead = grammy_table.find('data-colname')
 # column_names = [th.text.strip() for th in thead.find_all('th')]
