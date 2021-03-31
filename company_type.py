@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 ## Import the scraped dataframe from 'wikipedia_scrape.py'
 from wikipedia_scrape import fortune_table
 
@@ -24,9 +23,38 @@ for company_row in fortune_rows:
             list_company_links.append(company_link)
 
 ## Print the dictionary and list for testing purposes
-print(dict_company_links)
+#print(dict_company_links)
 #print(list_company_links)
 
+## TEMP imports
+from bs4 import BeautifulSoup
+import requests
+import pandas as pd
+
+## TODO: clean this mess up
+## make conversion in wikipedia_scrape a function so it could be called instead of whatever this is
+for company_name, company_link in dict_company_links.items():
+    #print(company_name, '->', company_link)
+    ## Prepare the scrape by getting the access to the wikipedia page
+    ## and set up the BeautifulSoup to pull the data
+    response = requests.get(company_link, auth=('user', 'pass'))
+    soup = BeautifulSoup(response.text, 'lxml')
+
+    ## Pull the data and save all the data into a list
+    company_datatable = soup.find('table', {'class':'infobox vcard'})
+    company_data = pd.read_html(str(company_datatable))
+
+    ## Turn the list of data into a dataframe
+    company_dataframe = company_data[0]
+    company_dataframe.columns = ['header', 'value']
+
+    company_dict = dict(zip(company_dataframe.header, company_dataframe.value))
+    company_type = company_dict.get('Type')
+    dict_company_links[company_name] = company_type
+
+print(dict_company_links)
+
+# TODO: remove commented code below?
 # thead = grammy_table.find('data-colname')
 # column_names = [th.text.strip() for th in thead.find_all('th')]
 
