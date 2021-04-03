@@ -22,10 +22,6 @@ for company_row in fortune_rows:
             dict_company_links[company] = company_link
             list_company_links.append(company_link)
 
-## Print the dictionary and list for testing purposes
-#print(dict_company_links)
-#print(list_company_links)
-
 ## TEMP imports
 from bs4 import BeautifulSoup
 import requests
