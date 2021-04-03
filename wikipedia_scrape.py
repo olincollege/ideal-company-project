@@ -5,7 +5,7 @@ Library for retrieving information of a Wikipedia Table
 ## the scraped data into a CSV file.
 from bs4 import BeautifulSoup
 import requests
-import pandas as pd
+import pandas
 
 def get_fortune_table(wiki_url, table_name):
     '''
@@ -23,9 +23,66 @@ def get_fortune_table(wiki_url, table_name):
 
     return soup.find('table', {'class':table_name})
 
+def table_to_dataframe(table):
+    '''
+    Description: Converts the HTML table of all the contents of the
+    top 50 of the Fortune 500 into a dataframe
+
+    Arguments: 
+    - (HTML) table: a table of all the scraped contents from the
+    Wikipedia article containing the information about the top 
+    50 companies of the Global Fortune 500.
+
+    Returns: a formatted dataframe 
+    containing all the of the top 50 companies of the Global Fortune 500.
+    '''
+    ## Convert the table into a string
+    data = pandas.read_html(str(table))
+
+    ## Turn the data string into a dataframe
+    return data[0]
+
+def clean_dataframe(dataframe):
+    '''
+    Description: Clean up the dataframe table by
+    dropping the unnecessary second header that contains the measurement units for the Profit and Revenue,
+    dropping the Profits section and Reference Sections,
+    and removing the '[note 1]' in the name of the Country column
+
+    Arguments: 
+    - (dataframe) dataframe: a formatted dataframe containing 
+    the information about the top 50 companies of the Global Fortune 500.
+
+    Returns: a formatted dataframe 
+    containing all the of the top 50 companies of the Global Fortune 500 
+    without any of the aformentioned rows and columns
+    '''
+    # Drop Duplicate Header
+    dataframe.columns = dataframe.columns.droplevel(-1)
+    # Remove Profit & Reference Columns
+    dataframe = dataframe.drop(columns=['Profit','Ref'])
+    # Remove the '[note 1]' from 'Country[note 1]'
+    dataframe = dataframe.rename(columns = {'Country[note 1]':'Country'})
+
+    return dataframe
+
 def get_company_links(table):
-    dict_company_links = {}
-    #list_company_links = [] <- Remove if we're not going to handle lists
+    '''
+    Description: Go through the parsed table,
+    find all the links of the companies, 
+    and store them in a dictionary alongisde with
+    the company of the name they are associated with.
+
+    Arguments
+    - (HTML) table: a table of all the scraped contents from the
+    Wikipedia article containing the information about the top 
+    50 companies of the Global Fortune 500.
+    
+    Returns: a dictionary of all the company links with the 
+    company names as the key and the links as their stored values.
+    '''
+    # Empty dictionary to store all the company links
+    dictionary_company_links = {}
 
     ## Put all the rows of the table into a variable
     ## to get all the company links
@@ -34,49 +91,71 @@ def get_company_links(table):
     ## Check through all the rows and get all the companny links
     ## and store them in a dictionary and library
     for company_row in fortune_rows:
-        row_elements = company_row.find_all("td") # Check for all the elements in the table with a 'td' tag
+        # Check for all the elements in the table with a 'td' tag
+        row_elements = company_row.find_all("td") 
         # If elements in a row are not empty, then parse the data
         if row_elements != []:
             company = row_elements[0].text.strip()
-            # If found a link within the table, store it and append it to the list and dictionary
+            # If found a link within the table, store it and append it to the dictionary
             if row_elements[0].find("a"):
                 company_link = "https://en.wikipedia.org"+row_elements[0].find("a")["href"] 
-                dict_company_links[company] = company_link
-                #list_company_links.append(company_link) <- Remove if we're not going to handle lists
+                dictionary_company_links[company] = company_link
     
-    return dict_company_links
-
-def table_to_df(table):
-    data = pd.read_html(str(table))
-
-    ## Turn the list of data into a dataframe
-    return data[0]
-
-def clean_dataframe(dataframe):
-    ## Clean up the dataframe
-    ## Drop Duplicate Header and Reference Column
-    dataframe.columns = dataframe.columns.droplevel(-1) # Drop Duplicate Header
-    dataframe = dataframe.drop(columns=['Profit','Ref']) # Remove Profit & Reference Columns
-    dataframe=dataframe.rename(columns = {'Country[note 1]':'Country'}) # Remove the '[note 1] from 'Country[note 1]'
-
-    return dataframe
+    return dictionary_company_links
 
 def get_company_types(dict_company_links):
+    '''
+    Description: from the parsed dictionary with all the companies
+    and their links, get the company types from all the companies
+    and store the types of companies alongside with the company name
+
+    Arguments:
+    - (dictionary) dict_company_links: a dictionary of all the 
+    company links with the company names as the key and the links as their stored values.
+
+    Returns: a dictionary of all the company links with the 
+    company names as the keys and the types as their stored values.
+    '''
+    # Empty dictionary to contain all the company types
+    dictionary_company_types = {}
+
+    # Go through all the companies in the dictionary
     for company_name, company_link in dict_company_links.items():
-        #print(company_name, '->', company_link)
-
-        company_dataframe = table_to_df(get_fortune_table(company_link, 'infobox vcard'))
-
+        # Get the dataframe table of the information box with the type of company
+        company_dataframe = table_to_dataframe(get_fortune_table(company_link, 'infobox vcard'))
+        # Replace the column names '1' and '2' to 'header' and 'value'
         company_dataframe.columns = ['header', 'value']
-
-        company_dict = dict(zip(company_dataframe.header, company_dataframe.value))
-        company_type = company_dict.get('Type')
-        dict_company_links[company_name] = company_type
+        # Change the dataframe into a dictionary
+        company_dictionary = dict(zip(company_dataframe.header, company_dataframe.value))
+        # In the dictionary, find the value associated with the 'Type' key
+        company_type = company_dictionary.get('Type')
+        # Store the key 'Type' value into a dictionary 
+        dictionary_company_types[company_name] = company_type
         
-    return dict_company_links
+    return dictionary_company_types
 
-def dictionary_to_df(dictionary):
-    return pd.DataFrame(list(dictionary.items()),columns = ['Company Name','Company Type'])
+def dictionary_to_dataframe(dictionary):
+    '''
+    Description: Turns the company types dictionary into a dataframe
+    and assigns the column names as 'Company Name' and 'Company Type'
 
-def df_to_csv(dataframe, category):
+    Arguments: a dictionary a dictionary of all the company links with the 
+    company names as the keys and the types as their stored values.
+
+    Returns: a dataframe with the columns "Company Name" and "Company Type"
+    '''
+    return pandas.DataFrame(list(dictionary.items()),columns = ['Company Name','Company Type'])
+
+def dataframe_to_csv(dataframe, category):
+    '''
+    Description: Turn the dataframe into a CSV file for analysis on the final paper
+
+    Arguments:
+    - dataframe: a dataframe of either the total companies information or
+    each respective company types
+    - category: the file name and type that the dataframe is converting to
+
+    Returns: A CSV file containing either the total companies information or
+    each respective company types
+    '''
     dataframe.to_csv(r'/home/softdes/Documents/softdes/ideal-company-project/' + category + '.csv', index=False)
