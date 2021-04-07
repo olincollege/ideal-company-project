@@ -158,5 +158,6 @@ def dataframe_to_csv(dataframe, category):
     Returns: A CSV file containing either the total companies information or
     each respective company types
     '''
+    ## CHANGE THE TEXT IN HERE AND CHANGE YOUR FILE DIRECTORY 
     dataframe.to_csv(r'/home/softdes/Documents/softdes/ideal-company-project/' \
         + category + '.csv', index=False)
