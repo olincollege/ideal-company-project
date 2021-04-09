@@ -63,7 +63,7 @@ def clean_dataframe(dataframe):
     # Remove Profit & Reference Columns
     dataframe = dataframe.drop(columns=['Profit','Ref'])
     # Remove the '[note 1]' from 'Country[note 1]'
-    dataframe = dataframe.rename(columns = {'Country[note 1]':'Country'})
+    dataframe = dataframe.rename(columns = {'Headquarters[note 1]':'Country'})
 
     return dataframe
 
