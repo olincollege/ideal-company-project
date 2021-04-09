@@ -9,6 +9,8 @@ import pandas
 
 def get_fortune_table(wiki_url, table_name):
     '''
+    Function is directly accessing Wikipedia Links: CANNOT BE TESTED
+
     Description: Prepare the scrape by getting the access to the wikipedia page
     and set up the BeautifulSoup to pull the data from the table
 
@@ -69,6 +71,9 @@ def clean_dataframe(dataframe):
 
 def get_company_links(table):
     '''
+    Function is directly accessing Wikipedia links from the table:
+    CANNOT BE TESTED
+
     Description: Go through the parsed table,
     find all the links of the companies,
     and store them in a dictionary alongisde with
@@ -106,6 +111,9 @@ def get_company_links(table):
 
 def get_company_types(dict_company_links):
     '''
+    Function is directly accessing Wikipedia links from the table:
+    CANNOT BE TESTED
+
     Description: from the parsed dictionary with all the companies
     and their links, get the company types from all the companies
     and store the types of companies alongside with the company name
@@ -148,6 +156,9 @@ def dictionary_to_dataframe(dictionary):
 
 def dataframe_to_csv(dataframe, category):
     '''
+    Function does not return anything because it is creating two CSV files:
+    CANNOT BE TESTED
+
     Description: Turn the dataframe into a CSV file for analysis on the final paper
 
     Arguments:
@@ -158,6 +169,6 @@ def dataframe_to_csv(dataframe, category):
     Returns: A CSV file containing either the total companies information or
     each respective company types
     '''
-    ## CHANGE THE TEXT IN HERE AND CHANGE YOUR FILE DIRECTORY 
+    ## NOTE: CHANGE THE TEXT IN HERE AND CHANGE YOUR FILE DIRECTORY 
     dataframe.to_csv(r'/home/softdes/Documents/softdes/ideal-company-project/' \
         + category + '.csv', index=False)

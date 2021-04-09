@@ -34,3 +34,9 @@ To download plotly: ``pip install plotly``
 Before running the project, please change the directory path you'll be saving the CSV data files to in the ``wikipedia_scrape.py`` file under the function called ``dataframe_to_csv``
 
 After you change the directory path, you can run the project by running ``company_info.py`` and you'll get two CSV files ``company_total.csv`` and ``company_type.csv`` in the file directory. When you have the two python files, you can run ``global_500.ipynb``  to generate the plots already shown in the computational essay.
+
+**SOURCES**
+
+List of Largest Companies by Revenue: https://en.wikipedia.org/wiki/List_of_largest_companies_by_revenue
+
+ISO 3166-1 alpha-3 (Three Letter Country Codes): https://en.wikipedia.org/wiki/ISO_3166-1_alpha-3

@@ -1,3 +1,8 @@
+'''
+Contains the dictionary for the Three Letter ISO Country Code Converter
+needed for the visualization in 'global_500_essay_m.ipynb'
+'''
+
 cc3_cn = {  # cc3_cn - Three Letter ISO Country Code to Country Name
     'AFG': 'Afghanistan',
     'ALA': 'Aland Islands',
