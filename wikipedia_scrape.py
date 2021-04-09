@@ -16,7 +16,7 @@ def get_fortune_table(wiki_url, table_name):
     - (string) wiki_url: Wikipedia URL that contains the data we need
     - (string) table_name: Name of the tag that is associated to the table
 
-    Returns: Contents of the table in its HTML form 
+    Returns: Contents of the table in its HTML form
     '''
     response = requests.get(wiki_url, auth=('user', 'pass'))
     soup = BeautifulSoup(response.text, 'lxml')
@@ -28,12 +28,12 @@ def table_to_dataframe(table):
     Description: Converts the HTML table of all the contents of the
     top 50 of the Fortune 500 into a dataframe
 
-    Arguments: 
+    Arguments:
     - (HTML) table: a table of all the scraped contents from the
-    Wikipedia article containing the information about the top 
+    Wikipedia article containing the information about the top
     50 companies of the Global Fortune 500.
 
-    Returns: a formatted dataframe 
+    Returns: a formatted dataframe
     containing all the of the top 50 companies of the Global Fortune 500.
     '''
     ## Convert the table into a string
@@ -45,16 +45,17 @@ def table_to_dataframe(table):
 def clean_dataframe(dataframe):
     '''
     Description: Clean up the dataframe table by
-    dropping the unnecessary second header that contains the measurement units for the Profit and Revenue,
+    dropping the unnecessary second header that contains
+    the measurement units for the Profit and Revenue,
     dropping the Profits section and Reference Sections,
     and removing the '[note 1]' in the name of the Country column
 
-    Arguments: 
-    - (dataframe) dataframe: a formatted dataframe containing 
+    Arguments:
+    - (dataframe) dataframe: a formatted dataframe containing
     the information about the top 50 companies of the Global Fortune 500.
 
-    Returns: a formatted dataframe 
-    containing all the of the top 50 companies of the Global Fortune 500 
+    Returns: a formatted dataframe
+    containing all the of the top 50 companies of the Global Fortune 500
     without any of the aformentioned rows and columns
     '''
     # Drop Duplicate Header
@@ -69,16 +70,16 @@ def clean_dataframe(dataframe):
 def get_company_links(table):
     '''
     Description: Go through the parsed table,
-    find all the links of the companies, 
+    find all the links of the companies,
     and store them in a dictionary alongisde with
     the company of the name they are associated with.
 
     Arguments
     - (HTML) table: a table of all the scraped contents from the
-    Wikipedia article containing the information about the top 
+    Wikipedia article containing the information about the top
     50 companies of the Global Fortune 500.
-    
-    Returns: a dictionary of all the company links with the 
+
+    Returns: a dictionary of all the company links with the
     company names as the key and the links as their stored values.
     '''
     # Empty dictionary to store all the company links
@@ -92,15 +93,15 @@ def get_company_links(table):
     ## and store them in a dictionary and library
     for company_row in fortune_rows:
         # Check for all the elements in the table with a 'td' tag
-        row_elements = company_row.find_all("td") 
+        row_elements = company_row.find_all("td")
         # If elements in a row are not empty, then parse the data
         if row_elements != []:
             company = row_elements[0].text.strip()
             # If found a link within the table, store it and append it to the dictionary
             if row_elements[0].find("a"):
-                company_link = "https://en.wikipedia.org"+row_elements[0].find("a")["href"] 
+                company_link = "https://en.wikipedia.org"+row_elements[0].find("a")["href"]
                 dictionary_company_links[company] = company_link
-    
+
     return dictionary_company_links
 
 def get_company_types(dict_company_links):
@@ -110,10 +111,10 @@ def get_company_types(dict_company_links):
     and store the types of companies alongside with the company name
 
     Arguments:
-    - (dictionary) dict_company_links: a dictionary of all the 
+    - (dictionary) dict_company_links: a dictionary of all the
     company links with the company names as the key and the links as their stored values.
 
-    Returns: a dictionary of all the company links with the 
+    Returns: a dictionary of all the company links with the
     company names as the keys and the types as their stored values.
     '''
     # Empty dictionary to contain all the company types
@@ -129,9 +130,8 @@ def get_company_types(dict_company_links):
         company_dictionary = dict(zip(company_dataframe.header, company_dataframe.value))
         # In the dictionary, find the value associated with the 'Type' key
         company_type = company_dictionary.get('Type')
-        # Store the key 'Type' value into a dictionary 
+        # Store the key 'Type' value into a dictionary
         dictionary_company_types[company_name] = company_type
-        
     return dictionary_company_types
 
 def dictionary_to_dataframe(dictionary):
@@ -139,7 +139,7 @@ def dictionary_to_dataframe(dictionary):
     Description: Turns the company types dictionary into a dataframe
     and assigns the column names as 'Company Name' and 'Company Type'
 
-    Arguments: a dictionary a dictionary of all the company links with the 
+    Arguments: a dictionary a dictionary of all the company links with the
     company names as the keys and the types as their stored values.
 
     Returns: a dataframe with the columns "Company Name" and "Company Type"
@@ -158,4 +158,6 @@ def dataframe_to_csv(dataframe, category):
     Returns: A CSV file containing either the total companies information or
     each respective company types
     '''
-    dataframe.to_csv(r'/home/softdes/Documents/softdes/ideal-company-project/' + category + '.csv', index=False)
+    ## CHANGE THE TEXT IN HERE AND CHANGE YOUR FILE DIRECTORY 
+    dataframe.to_csv(r'/home/softdes/Documents/softdes/ideal-company-project/' \
+        + category + '.csv', index=False)
