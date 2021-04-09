@@ -98,13 +98,13 @@ def get_company_links(table):
     ## and store them in a dictionary and library
     for company_row in fortune_rows:
         # Check for all the elements in the table with a 'td' tag
-        row_elements = company_row.find_all("td")
+        row_elements = company_row.find_all('td')
         # If elements in a row are not empty, then parse the data
         if row_elements != []:
             company = row_elements[0].text.strip()
             # If found a link within the table, store it and append it to the dictionary
             if row_elements[0].find("a"):
-                company_link = "https://en.wikipedia.org"+row_elements[0].find("a")["href"]
+                company_link = 'https://en.wikipedia.org'+row_elements[0].find('a')['href']
                 dictionary_company_links[company] = company_link
 
     return dictionary_company_links
@@ -150,7 +150,7 @@ def dictionary_to_dataframe(dictionary):
     Arguments: a dictionary a dictionary of all the company links with the
     company names as the keys and the types as their stored values.
 
-    Returns: a dataframe with the columns "Company Name" and "Company Type"
+    Returns: a dataframe with the columns 'Company Name' and 'Company Type'
     '''
     return pandas.DataFrame(list(dictionary.items()),columns = ['Company Name','Company Type'])
 
@@ -169,6 +169,6 @@ def dataframe_to_csv(dataframe, category):
     Returns: A CSV file containing either the total companies information or
     each respective company types
     '''
-    ## NOTE: CHANGE THE TEXT IN HERE AND CHANGE YOUR FILE DIRECTORY 
+    ## NOTE: CHANGE THE TEXT IN HERE AND CHANGE YOUR FILE DIRECTORY
     dataframe.to_csv(r'/home/softdes/Documents/softdes/ideal-company-project/' \
         + category + '.csv', index=False)

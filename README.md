@@ -1,11 +1,7 @@
 # grammy-project-winner
 **The Ideal Company for the Global Fortune 500**
 
-What does it take to be a great company? Is it achieving a great product? Maybe hiring great workers who love what they're doing? How about a company that institutes a culture of trust? Or maybe it's something much more profound like embedding great purpose in the company? Although these are great ways to improve your company, beyond these seemingly subjective factors, is it possible to find an "ideal" company based on quantitative facts and numbers?
-
-In this project, we'll be exploring this area by asking *"What are the most represented characteristics of the top grossing businesses around the world?"* We hope to answer this question to see what are the successful companies across the global to help guide people in the correct direction when starting a company. 
-
-We're basing these "characteristics" by **ownership type**, the **industry type**, and the **headquarters locations** of the various companies. And although it may seem a bit shallow to base it on only these factors, we can state that basing our findings on these factors is a good starting point for anyone who wishes to make a top company across the globe.
+In this project, we'll be exploring this area by asking *"What are the most represented characteristics of the top grossing businesses around the world?"* We are going to answer this question by basing these "characteristics" by **ownership type**, the **industry type**, and the **headquarters locations** of the various companies. And although it may seem a bit shallow to base it on only these factors, we can state that basing our findings on these factors is a good starting point for anyone who wishes to make a top company across the globe.
 
 **DOWNLOAD PREREQUISITES**
 
