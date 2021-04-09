@@ -4,6 +4,10 @@ Test cases for the data scrapping and manipulation code in
 
 NOTE: Not all functions could be tested because
 some functions require to access Wikipedia for information.
+
+NOTE: When running pytest, please be patient.
+Running the test functions that parse the data from
+the wikipedia article and manipulates the data may take a while.
 '''
 # Import in libraries needed for testing
 import pandas as pd
@@ -40,6 +44,12 @@ def test_dictionary_to_dataframe():
                       (get_company_types(get_company_links(fortune_table))),\
                       pd.DataFrame)
 
-## test to make sure dataframe dropped columns
-
-## test to make sure row is dropped
+def test_clean_dataframe():
+    '''
+    Description: Test to make sure the function cleans the dataframe
+    by removing the extraneous row that lists the units for the
+    Revenue and Profits Columns, dropping columns 'Profit' and 'Ref'
+    and renaming the 'Headquarters[note 1]' column to 'Country'
+    '''
+    assert list(clean_dataframe(table_to_dataframe(fortune_table)).columns) \
+        == ['Rank', 'Name', 'Industry', 'Revenue', 'Employees', 'Country']
