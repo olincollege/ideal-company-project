@@ -1,4 +1,4 @@
-# grammy-project-winner
+# ideal-company project
 **The Ideal Company for the Global Fortune 500**
 
 In this project, we'll be exploring this area by asking *"What are the most represented characteristics of the top grossing businesses around the world?"* We are going to answer this question by basing these "characteristics" by **ownership type**, the **industry type**, and the **headquarters locations** of the various companies. And although it may seem a bit shallow to base it on only these factors, we can state that basing our findings on these factors is a good starting point for anyone who wishes to make a top company across the globe.
